@@ -19,18 +19,25 @@
 #penguin(
   width:1.5cm,
   color:aqua,
-  eyes:(color:green)
+  eyes:(
+    shape:"wink"
+  )
 )
 
 #penguin(
   width:2cm,
   body-color:blue,
   head-color:red,
-  left-eye:(color:red),
-  right-eye:(color:green)
+  left-eye:(color:red,
+    shape:"shiny"),
+  right-eye:(
+    color:green,
+    shape:"wink")
 )
+
 
 #penguin(
   width:3cm,
-  left-eye:(color:green)
+  left-eye:(color:green),
+  right-eye:(shape:"none")
 )

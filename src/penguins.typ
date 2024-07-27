@@ -11,8 +11,8 @@
     let (ctx,a) = cetz.coordinate.resolve(ctx,anchor-name)
     let(x,y,z)=a
     circle((x,y),fill:red,stroke:none,radius:0.02)
-    line(stroke:0.2pt+red,anchor-name,(rel:(-0.1,0.1),to:anchor-name))
-    content((rel:(0.1,0.1),to:anchor-name), text(2pt,[#anchor-name: #round(a)]))
+    line(stroke:0.1pt+red,anchor-name,(rel:(-0.1,0.1),to:anchor-name))
+    content((rel:(0.1,0.1),to:anchor-name), text(1pt,[#anchor-name: #round(a)]))
   })
 }
 
@@ -20,6 +20,7 @@
 #let penguinInternal(color:none,body-color:none,head-color:none,eyes:none,left-eye:none,right-eye:none)= {
 
   let penguin-blue = rgb(3,14,29)
+  let penguin-black = rgb(23,19,19)
   let penguin-yellow = rgb(252,187,21)
   let penguin-white = rgb(248,248,248)
 
@@ -49,19 +50,30 @@
     head-color-value = head-color
   }
 
-  let eyes-color-value = penguin-blue
+  let eyes-color-value = penguin-black
   let left-eye-color-value =  eyes-color-value
   let right-eye-color-value =  eyes-color-value
+  let eyes-secondary-color-value = penguin-white
+  let left-eye-secondary-color-value = eyes-secondary-color-value
+  let right-eye-secondary-color-value = eyes-secondary-color-value
+  let eyes-shape-value = "normal"
+  let left-eye-shape-value = eyes-shape-value
+  let right-eye-shape-value = eyes-shape-value
   if eyes != none {
     eyes-color-value = eyes.at("color",default:eyes-color-value)
     left-eye-color-value =  eyes-color-value
     right-eye-color-value =  eyes-color-value
+    eyes-shape-value = eyes.at("shape",default:eyes-shape-value)
+    left-eye-shape-value = eyes-shape-value
+    right-eye-shape-value = eyes-shape-value
   }
   if left-eye != none {
     left-eye-color-value =  left-eye.at("color",default:left-eye-color-value)
+    left-eye-shape-value = left-eye.at("shape",default:left-eye-shape-value)
   }
   if right-eye != none {
     right-eye-color-value =  right-eye.at("color",default:right-eye-color-value)
+    right-eye-shape-value = right-eye.at("shape",default:right-eye-shape-value)
   }
 
   
@@ -88,6 +100,8 @@
   let penguin-angle-head-left = 7deg
   let penguin-angle-head-right = 93deg
   let penguin-eye-shift = 0.08//\pingu@eye@shift
+
+  let eye-base-angle = 38.5deg
 
 group(name:"body",{
 
@@ -148,16 +162,68 @@ circle(fill:belly-color-value,stroke:none,(rel:(0, - 0.025),to:"eye-back-right")
 circle(fill:belly-color-value,stroke:none,(rel:(0, - 0.025),to:"eye-back-left"),radius:(0.525,0.625),name:"face-left")
 
 })
+let draw-eye-shiny(origin) = {
+  
+}
 
-
+let eye-left-position  = (rel:( penguin-eye-shift,0.075),to:"body.eye-back-left")
+let eye-right-position = (rel:(-penguin-eye-shift,0.075),to:"body.eye-back-right")
 //EYES
 
-group(name:"eyes",{
-circle(fill:left-eye-color-value,stroke:none,(rel:(penguin-eye-shift,0.075),to:"body.eye-back-left"),radius:(0.1225,0.1365))
-circle(fill:right-eye-color-value,stroke:none,(rel:(-penguin-eye-shift,0.075),to:"body.eye-back-right"),radius:(0.1225,0.1365))
+group(name:"left-eye",{
+anchor("eye-left","body.eye-back-left")
+if left-eye-shape-value=="normal" {
+  circle(fill:left-eye-color-value,stroke:none,eye-left-position,radius:(0.1225,0.1365))
+} else if left-eye-shape-value=="shiny" {
+  circle(fill:left-eye-color-value,stroke:none,eye-left-position,radius:(0.22,0.26),name: "eye-shape")
+  circle(fill:left-eye-secondary-color-value,stroke:none,radius:(0.08,0.1),(rel:(angle:eye-base-angle,radius:(0.085,0.1)),to:"eye-shape.center"))
+  circle(fill:left-eye-secondary-color-value,stroke:none,radius:(0.025,0.035),(rel:(angle:eye-base-angle+180deg,radius:(0.12,0.14)),to:"eye-shape.center"))
+} else if left-eye-shape-value=="wink" {
+    group(name:"left-inner-eye",{
+      rotate(-4deg,origin:eye-left-position)
+      line(stroke:none,
+        eye-left-position,
+        (rel:(angle:174deg,radius:0.14),to:()),
+        (rel:(0,-0.065),to:()),name:"start-line")
+     merge-path(fill:left-eye-color-value,stroke:none, {
+      arc((),start:174deg,stop:6deg,radius:(0.14,0.14))
+      arc((),start:-6deg,stop:-174deg,radius:(0.01,0.008))
+      arc((),start:6deg,stop:174deg,radius:(0.12,0.065))
+      arc((),start:-6deg,stop:-174deg,radius:(0.01,0.008))
+     })
+    })
+} else if left-eye-shape-value=="none" {
 
+}else {
+  panic("Unknown left-eye shape: ",left-eye-shape-value)
+}
 })
 
+group(name:"right-eye",{
+if right-eye-shape-value=="normal" {
+  circle(fill:right-eye-color-value,stroke:none,eye-right-position,radius:(0.1225,0.1365))
+} else if right-eye-shape-value=="shiny" {
+  circle(fill:right-eye-color-value,stroke:none,eye-right-position,radius:(0.22,0.26),name: "eye-shape")
+  circle(fill:right-eye-secondary-color-value,stroke:none,radius:(0.08,0.1),(rel:(angle:eye-base-angle,radius:(0.085,0.1)),to:"eye-shape.center"))
+  circle(fill:right-eye-secondary-color-value,stroke:none,radius:(0.025,0.035),(rel:(angle:eye-base-angle+180deg,radius:(0.12,0.14)),to:"eye-shape.center"))
+} else if right-eye-shape-value=="wink" {
+    rotate(4deg,origin:eye-right-position)
+    line(stroke:none,
+      eye-right-position,
+      (rel:(angle:174deg,radius:0.14),to:()),
+      (rel:(0,-0.065),to:()))
+   merge-path(fill:right-eye-color-value,stroke:none, {
+    arc((),start:174deg,stop:6deg,radius:(0.14,0.14))
+    arc((),start:-6deg,stop:-174deg,radius:(0.01,0.008))
+    arc((),start:6deg,stop:174deg,radius:(0.12,0.065))
+    arc((),start:-6deg,stop:-174deg,radius:(0.01,0.008))
+   })
+} else if right-eye-shape-value=="none" {
+
+}else {
+  panic("Unknown right-eye shape: ",right-eye-shape-value)
+}
+})
 //WINGS
 
 on-layer(-1,{
@@ -257,7 +323,6 @@ on-layer(-1,{
    line("base",(rel:(-0.19,0)))
    arc((),start:180deg,stop:360deg,radius:(0.19,0.225),name:"bill-bottom")
    line((),(rel:(-0.02,0.005)))
-   //line((),(rel:(-0.17,0.05),to:"base"))
    arc-through((),(rel:(0,0.02),to:"base"),(rel:(-0.17,0.005),to:"base"))
    line((),(rel:(-0.19,0),to:"base"))
    anchor("bottom","bill-bottom.mid")
@@ -267,35 +332,36 @@ on-layer(-1,{
 
 
 
-   // anchor-coords("wings.right-start")
-   // anchor-coords("wings.right-wing-tip")
-   // anchor-coords("wings.right-wing")
-   // anchor-coords("wings.left-start")
-   // anchor-coords("wings.left-wing-tip")
-   // anchor-coords("wings.left-wing")
-   // anchor-coords("body.wings-side-left")
-   // anchor-coords("body.wings-side-right")
-//   anchor-coords("body.right.end")
-//   anchor-coords("body.waist-right-middle")
-//   anchor-coords("body.waist-right")
-//   anchor-coords("body.foot-right")
-//   anchor-coords("body.bottom-center")
-//   anchor-coords("body.foot-left")
-//   //anchor-coords("body.left.start")
-//   //anchor-coords("body.left.end")
-//  anchor-coords("body.head-center")
-//  anchor-coords("bill.base")
-//  anchor-coords("bill.bottom")
-//   anchor-coords("body.head-top")
-//   anchor-coords("body.head-topright")
-//   anchor-coords("body.head-topleft")
-//   anchor-coords("body.belly-back")
-//   anchor-coords("body.belly-test")
-//   anchor-coords("body.belly-left")
-//   anchor-coords("body.eye-back-left")
-// //  anchor-coords("body.eye-back-right")
-//   anchor-coords("body.head-back-con-left")
-//   anchor-coords("body.head-back-con-right")
+  // anchor-coords("wings.right-start")
+  // anchor-coords("wings.right-wing-tip")
+  // anchor-coords("wings.right-wing")
+  // anchor-coords("wings.left-start")
+  // anchor-coords("wings.left-wing-tip")
+  // anchor-coords("wings.left-wing")
+  // anchor-coords("body.wings-side-left")
+  // anchor-coords("body.wings-side-right")
+  // anchor-coords("body.right.end")
+  // anchor-coords("body.waist-right-middle")
+  // anchor-coords("body.waist-right")
+  // anchor-coords("body.foot-right")
+  // anchor-coords("body.bottom-center")
+  // anchor-coords("body.foot-left")
+  // anchor-coords("body.left.start")
+  // anchor-coords("body.left.end")
+  // anchor-coords("body.head-center")
+  // anchor-coords("bill.base")
+  // anchor-coords("bill.bottom")
+  // anchor-coords("body.head-top")
+  // anchor-coords("body.head-topright")
+  // anchor-coords("body.head-topleft")
+  // anchor-coords("body.belly-back")
+  // anchor-coords("body.belly-test")
+  // anchor-coords("body.belly-left")
+  // anchor-coords("body.eye-back-left")
+  // anchor-coords("left-eye.eye-left")
+  // anchor-coords("body.eye-back-right")
+  // anchor-coords("body.head-back-con-left")
+  // anchor-coords("body.head-back-con-right")
 
 }
 
