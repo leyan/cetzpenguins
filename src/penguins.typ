@@ -2,12 +2,9 @@
 #import cetz.draw: *
 
 
-#let test="test PAU"
-
-#let round(a) = a.map(v => calc.round(v,digits:4))
-
 #let anchor-coords(anchor-name) = {
   get-ctx(ctx => {
+    let round(a) = a.map(v => calc.round(v,digits:4))
     let (ctx,a) = cetz.coordinate.resolve(ctx,anchor-name)
     let(x,y,z)=a
     circle((x,y),fill:red,stroke:none,radius:0.02)
@@ -35,7 +32,18 @@
   let right-foot-color-value = penguin-yellow
   let bill-color-value = penguin-yellow
 
-  //These can be overwritten either all together or individually
+
+  let eyes-color-value = penguin-black
+  let left-eye-color-value =  eyes-color-value
+  let right-eye-color-value =  eyes-color-value
+  let eyes-secondary-color-value = penguin-white
+  let left-eye-secondary-color-value = eyes-secondary-color-value
+  let right-eye-secondary-color-value = eyes-secondary-color-value
+  let eyes-shape-value = "normal"
+  let left-eye-shape-value = eyes-shape-value
+  let right-eye-shape-value = eyes-shape-value
+
+  //Customization parameters
   if color != none {
     body-color-value = color
     head-color-value = color
@@ -50,15 +58,6 @@
     head-color-value = head-color
   }
 
-  let eyes-color-value = penguin-black
-  let left-eye-color-value =  eyes-color-value
-  let right-eye-color-value =  eyes-color-value
-  let eyes-secondary-color-value = penguin-white
-  let left-eye-secondary-color-value = eyes-secondary-color-value
-  let right-eye-secondary-color-value = eyes-secondary-color-value
-  let eyes-shape-value = "normal"
-  let left-eye-shape-value = eyes-shape-value
-  let right-eye-shape-value = eyes-shape-value
   if eyes != none {
     eyes-color-value = eyes.at("color",default:eyes-color-value)
     left-eye-color-value =  eyes-color-value
@@ -284,7 +283,7 @@ on-layer(-1,{
   group(name:"left-foot",{
    group(name:"first-toe",{
       anchor("left-foot-first",(rel:(-0.5*penguin-foot-single-height,0),to:"body.foot-left",))
-      rotate(penguin-basic-feet-bend - 25deg,origin:"left-foot-first")
+      rotate( 19deg,origin:"left-foot-first")
       circle(fill:left-foot-color-value,stroke:none,radius:(penguin-foot-single-width,penguin-foot-single-height),"left-foot-first")
     })
    group(name:"second-toe",{
