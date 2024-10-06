@@ -108,8 +108,8 @@ group(name:"body",{
 
    merge-path(fill:body-color-value,stroke:none, {
   arc-through((0,penguin-outer-offset),(rel:(-0.0283,-penguin-outer-offset -0.5125),update:false),(0,- penguin-side-half-size ),    name:"right")
-  arc((),start: 180deg, stop: 270deg,radius:(penguin-foot-outer-width,penguin-foot-outer-height),name:"waist-to-foot-rigth")
-  arc((),start: 270deg, stop: 332deg,radius:(penguin-foot-inner-width,penguin-foot-inner-height),name:"foot-inner-rigth")
+  arc((),start: 180deg, stop: 270deg,radius:(penguin-foot-outer-width,penguin-foot-outer-height),name:"waist-to-foot-right")
+  arc((),start: 270deg, stop: 332deg,radius:(penguin-foot-inner-width,penguin-foot-inner-height),name:"foot-inner-right")
   arc((),start: 208deg, stop: 270deg,radius:(penguin-foot-inner-width,penguin-foot-inner-height),name:"foot-inner-left")
   arc((),start: 270deg, stop: 360deg,radius:(penguin-foot-outer-width,penguin-foot-outer-height),name:"waist-to-foot-left")
   arc-through((),(rel:(0.0283,penguin-outer-offset+0.5125),update:false),(rel:(0,penguin-side-half-size + penguin-outer-offset)),    name:"left")
@@ -120,8 +120,8 @@ group(name:"body",{
     anchor("waist-right","right.77.5%")
     anchor("waist-right-middle","right.50%")
     anchor("waist-left-middle","left.50%")
-    anchor("foot-right","waist-to-foot-rigth.end")
-    anchor("bottom-center","foot-inner-rigth.end")
+    anchor("foot-right","waist-to-foot-right.end")
+    anchor("bottom-center","foot-inner-right.end")
     anchor("foot-left","foot-inner-left.end")
     anchor("head-center","center-horizontal.mid")
 
