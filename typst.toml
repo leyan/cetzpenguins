@@ -1,8 +1,8 @@
 [package]
 name = "cetzpingus"
 version = "0.1.0"
-entrypoint = "pingus.typ"
+entrypoint = "penguins.typ"
 license = "MIT"
-authors = [@leyan]
+authors = ["@leyan"]
 repository = "https://github.com/leyan/cetzpenguins"
 description = "Penguins in Typst drawn with CeTZ"
